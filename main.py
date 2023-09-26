@@ -1,3 +1,5 @@
+"""Other Docstring"""
+
 import package.module_1 as m1
 
 
