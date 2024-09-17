@@ -4,3 +4,6 @@
 [submodule "small-test-repo"]
 	path = small-test-repo
 	url = https://github.com/rtyley/small-test-repo.git
+[submodule "flamedisx"]
+	path = flamedisx
+	url = git@github.com:FlamTeam/flamedisx.git
