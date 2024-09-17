@@ -1,0 +1,6 @@
+[submodule "test-repo"]
+	path = test-repo
+	url = git@github.com:zpqrtbnk/test-repo.git
+[submodule "small-test-repo"]
+	path = small-test-repo
+	url = https://github.com/rtyley/small-test-repo.git
