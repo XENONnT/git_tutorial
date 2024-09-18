@@ -3,7 +3,23 @@
 Use this repository to play around with git and github to learn by doing.
 
 ## Learn Branching
-If you want to master the art of git branching, use this awesome tool: https://learngitbranching.js.org/ (if you want)
+If you want to master the art of git branching, use this awesome tool: https://learngitbranching.js.org/
+
+## Cool `aliases`
+I recommend adding these lines to your `~/.gitconfig`:
+```
+[alias]
+        lol = log --graph --decorate --pretty=oneline --abbrev-commit
+        lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+[color]
+        branch = auto
+        diff = auto
+        interactive = auto
+        status = auto
+```
+
+This will allow you to use `git lol` and `git lola` to have a cool and clear view of the commit chain of your repository!
+Source, related music, and further info [here](http://blog.kfish.org/2010/04/git-lola.html).
 
 ## Learn submodules
 First and foremost, for any issues with submodules, the git submodules documentation is available [here](https://git-scm.com/book/en/v2/Git-Tools-Submodules).
@@ -25,8 +41,6 @@ If you clone the repository without initialising the submodules using the flag `
 git submodule update --init --recursive
 ```
 
-### Clone a repository with partially initialised submodules
-If you want to initialise only a selected group of submodules, clone the repository using vanilla `git-clone`, then do the following
 
 ### Add a submodule to a repository
 To add a submodule (for example [cutax](git@github.com:XENONnT/cutax.git)) to this repo, do the following:
@@ -43,29 +57,40 @@ cd git_tutorial; mkdir submodules; cd submodules
 ```
 git submodule add git@github.com:XENONnT/cutax.git
 ```
-- Decide at which commit to checkout the submodule
+- Commit (submodule addition is automatically staged, together with the creation/update of the `.gitmodules` file)
 ```
-# Enter the repo
-cd cutax
-
-# Checkout the commit you want the superproject to referenc
-git checkout v1.0.0
-
-# Leave the repo (go to the superproject)
-cd ..
-```
-
-- Commit
-```
-git add cutax
 git commit -m "Added cutax (v1.0.0) as submodule"
 ```
-
+Done! 🥳💃
 ### Working with submodules
 Submodules are nothing but git repositories within another git repository (the superproject). The directories containing the submodules will point to a specific commit of the submodule, and will not actually contain the contents of the whole submodule's repo! (That's why, when simply running `git-clone`, the submodule's dirs are empty).
 
 Working on a submodule from within the submodule's directory is the same as working with any other repository.
 If you commit some changes, you just have to tell the superproject to now point at the newest commit (or whichever commit you prefer). To do this, leave the submodule's dir and head to the superproject and commit the changes to the submodule.
+
+For instance, say you want the `cutax` submodule we have added in the previous section to be checked-out at version v1.0.0; you can then do the following
+```
+# From root of git_tutorial, enter the relevant submodule
+cd submodules/cutax
+
+# Let's assume we're currently at commit #0fa392
+# Do things and change commit (either by creating a new one with git-commit, or checking-out an existing one with git-checkout
+git checkout v1.0.0  # e.g. commit #ab392f
+```
+By doing this, you have moved HEAD to point to another commit(`#ab392f`, tagged as `v1.0.0`). The superproject is however still pointing at the previous commit (`#0fa392` in the example).
+Let's update the superproject to point at the new HEAD of the submodule:
+```
+# From submodules/cutax
+cd ..
+
+# Acknowledge changes to submodule
+git add cutax
+
+# Commit
+git commit -m "Submodule cutax checked-out at v1.0.0"
+```
+
+If you `git-push` these changes, the next person to `git-pull` or `git-clone` this repo will see that the `cutax` submodule is automatically checkout at `v1.0.0` with a detached HEAD.
 
 ### Pulling
 #### Pull only selected submodules
